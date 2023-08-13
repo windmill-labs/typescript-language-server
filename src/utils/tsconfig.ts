@@ -9,19 +9,30 @@
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import type { WorkspaceConfigurationImplicitProjectConfigurationOptions } from '../configuration-manager.js';
-import { ModuleKind, ModuleResolutionKind, ScriptTarget, JsxEmit } from '../ts-protocol.js';
-import type { ts } from '../ts-protocol.js';
+import type { WorkspaceConfigurationImplicitProjectConfigurationOptions } from "../configuration-manager.js";
+import { ModuleKind } from "../ts-protocol.js";
+import type { ts } from "../ts-protocol.js";
 
-const DEFAULT_PROJECT_CONFIG: ts.server.protocol.ExternalProjectCompilerOptions = Object.freeze({
-    module: ModuleKind.ESNext,
-    moduleResolution: ModuleResolutionKind.Node,
-    target: ScriptTarget.ES2020,
-    jsx: JsxEmit.React,
-});
+// @ts-ignore
+const DEFAULT_PROJECT_CONFIG: ts.server.protocol.ExternalProjectCompilerOptions =
+    Object.freeze({
+        types: ["bun-types"],
+        lib: ["esnext"],
+        module: ModuleKind.ESNext,
+        target: "esnext",
+        moduleResolution: "bundler",
+        noEmit: true,
+        allowImportingTsExtensions: true,
+        moduleDetection: "force",
+        allowJs: true,
+        esModuleInterop: true,
+        strict: true,
+        forceConsistentCasingInFileNames: true,
+        skipLibCheck: true,
+    });
 
 export function getInferredProjectCompilerOptions(
-    workspaceConfig: WorkspaceConfigurationImplicitProjectConfigurationOptions,
+    workspaceConfig: WorkspaceConfigurationImplicitProjectConfigurationOptions
 ): ts.server.protocol.ExternalProjectCompilerOptions {
     const projectConfig = { ...DEFAULT_PROJECT_CONFIG };
 
@@ -42,11 +53,13 @@ export function getInferredProjectCompilerOptions(
     }
 
     if (workspaceConfig.module) {
-        projectConfig.module = workspaceConfig.module as ts.server.protocol.ModuleKind;
+        projectConfig.module =
+            workspaceConfig.module as ts.server.protocol.ModuleKind;
     }
 
     if (workspaceConfig.target) {
-        projectConfig.target = workspaceConfig.target as ts.server.protocol.ScriptTarget;
+        projectConfig.target =
+            workspaceConfig.target as ts.server.protocol.ScriptTarget;
     }
 
     projectConfig.sourceMap = true;
