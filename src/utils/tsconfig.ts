@@ -29,6 +29,7 @@ const DEFAULT_PROJECT_CONFIG: ts.server.protocol.ExternalProjectCompilerOptions 
         strict: true,
         forceConsistentCasingInFileNames: true,
         skipLibCheck: true,
+        enable: true,
     });
 
 export function getInferredProjectCompilerOptions(
